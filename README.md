@@ -17,7 +17,7 @@ This webapp is being hosted at https://TGDates.hoppingturtles.repl.co. Simply pa
 
 A more detailed example use in a Telegram bot using [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot) is shown in [host.py](https://github.com/harshil21/TGDates/blob/main/host.py): https://github.com/harshil21/TGDates/blob/94f8809eea9ecccc7a57f2ad76f336f68ca8d54e/host.py#L41-L50
 
-If you want to customize the datepicker instance, pass the `options` parameter like this: https://TGDates.hoppingturtles.repl.co?options=. This parameter is a JSON object that will be passed to the air-datepicker constructor. You can find the list of options [here](https://air-datepicker.com/docs).
+If you want to customize the datepicker instance, pass the `options` parameter like this: `https://TGDates.hoppingturtles.repl.co?options={"timepicker": true}`. This parameter is a url encoded JSON object that will be passed to the air-datepicker constructor. You can find the list of options [here](https://air-datepicker.com/docs).
 
 Some notes:
 
