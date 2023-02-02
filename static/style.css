@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+* {
+    user-select: none; /* disable text selection */
+    -webkit-tap-highlight-color: transparent; /* disable tap highlight */
+    --range-height: calc(var(--adp-day-cell-height) / 4.1);
+    background-color: var(--tg-theme-bg-color, #f0f0f0);  /* fix for white borders on desktop */
+}
+
+.air-datepicker {
+    border: none; /* remove border becuase they look better without it imo */
+    width: unset; /* remove width so it takes full width of screen */
+    background-color: var(--tg-theme-bg-color, #f0f0f0);
+    --adp-font-family: "Open Sans", sans-serif;
+    --adp-font-size: 16px;  /* change font size so it looks better on mobile*/
+    --adp-background-color-hover: var(--tg-theme-bg-color, #fff);
+    --adp-background-color-active: transparent;
+    --adp-cell-background-color-hover: var(--tg-theme-bg-color, #fff);
+    --adp-cell-background-color-selected-hover: var(--tg-theme-button-color, #45bced);
+    --adp-cell-background-color-selected: var(--tg-theme-button-color, #5cc4ef);
+    --adp-color: var(--tg-theme-text-color, #000);
+    --adp-color-secondary: var(--tg-theme-hint-color, #9c9c9c);
+    --adp-color-other-month: var(--tg-theme-hint-color, #dedede);
+    --adp-time-track-height: 0.2px;
+    --adp-time-track-color: var(--tg-theme-button-color, #dedede);
+    --adp-time-day-period-color: var(--tg-theme-text-color, #000);
+    --adp-btn-color: var(--tg-theme-button-color, #4eb5e6);
+    /* Modify cell heights such that they take the full height of the screen */
+    --adp-day-cell-height: calc(var(--tg-viewport-height, 160px) / 6.9);
+    --adp-month-cell-height: calc(var(--tg-viewport-height, 180px) / 5.25);
+    --adp-year-cell-height: calc(var(--tg-viewport-height, 240px) / 3.94);
+    --adp-mobile-day-cell-height: calc(var(--tg-viewport-height, 160px) / 6.9);
+    --adp-mobile-month-cell-height: calc(var(--tg-viewport-height, 180px) / 5.25);
+    --adp-mobile-year-cell-height: calc(var(--tg-viewport-height, 240px) / 3.94);
+}
+
+.air-datepicker-cell.-selected- {
+    clip-path: circle(30%);  /* make selected date circle */
+    color: var(--tg-theme-button-text-color, #fff);
+}
+
+.air-datepicker-cell.-selected-.-current- {
+    color: var(--tg-theme-button-text-color, #fff);
+}
+
+.air-datepicker.-inline- {
+    overflow-y: scroll;  /* just in case */
+}
+
+.air-datepicker--time, .air-datepicker-nav {
+    border: unset;  /* remove border becuase they look better without it imo */
+}
+
+.air-datepicker-time--row input[type=range]::-webkit-slider-thumb {
+    border-radius: 50%;  /* make time slider thumb circle */
+    background-color: var(--tg-theme-button-color, #45bced);
+}
+
+.air-datepicker-time--current {
+    font-size: 16px;
+}
+
+.air-datepicker-time--current-hours, .air-datepicker-time--current-minutes {
+    font-size: 27px;
+    font-family: "Open Sans", sans-serif;
+}
+
+.air-datepicker-time--current-ampm {
+    font-size: 14px;
+}
+
+.air-datepicker-nav--title {
+    font-weight: 600;
+}
+
+.air-datepicker-nav--title i {  /* change year color on default settings */
+    color: var(--adp-color);
+}
+
+/* customize how the range looks */
+/* TODO: Improve this so the from and to have a circle on them with 
+one color and the in range has a different color see
+https://m3.material.io/components/date-pickers/specs#733bc6c3-be6f-4bf1-90d2-e152591ccb3f */
+/* Apply the clip path attribute only if we've selected a range, i.e. don't apply on first click */
+.air-datepicker-cell.-range-from-:has(+ .-in-range-, + .-range-to-) {
+    clip-path: inset(var(--range-height) 0 var(--range-height) 5px round 100% 0 0 100%) !important;
+    border: unset;
+    transition: all 0.2s ease-in-out;
+}
+
+.air-datepicker-cell.-in-range- {
+    clip-path: inset(var(--range-height) 0 var(--range-height) 0px);
+    transition: all 0.2s ease-in-out;
+}
+
+.air-datepicker-cell.-range-to-:not(.-range-from-) {  /* the :not() fix is for the year view */
+    border: unset;
+    clip-path: inset(var(--range-height) 5px var(--range-height) 0px round 0 100% 100% 0) !important;
+    transition: all 0.2s ease-in-out;
+}
+
+.air-datepicker--buttons {
+    border-top: 0.5px solid var(--tg-theme-hint-color, #dedede);
+}
