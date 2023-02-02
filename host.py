@@ -64,11 +64,6 @@ async def received_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
 
 
 async def main() -> None:
-    tg_app = Application.builder().token(TOKEN).build()
-
-    tg_app.add_handler(MessageHandler(filters.TEXT, send_datepicker))
-    tg_app.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, received_data))
-
     server = uvicorn.Server(
         config=uvicorn.Config(
             f"{Path(__file__).stem}:app",
@@ -79,6 +74,17 @@ async def main() -> None:
             ssl_keyfile=SSL_KEY,
         )
     )
+
+    if not TOKEN:  # If we're deploying this e.g. in Replit
+        await server.serve()
+        return
+
+    # If we are testing locally, use PTB
+    tg_app = Application.builder().token(TOKEN).build()
+
+    tg_app.add_handler(MessageHandler(filters.TEXT, send_datepicker))
+    tg_app.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, received_data))
+
 
     async with tg_app:
         await tg_app.updater.start_polling()

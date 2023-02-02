@@ -58,8 +58,6 @@ function activateMainButton(date, params) {
   // TODO: Provide localization options for the button text
   // TODO: Modify this if multipleDates is passed
   const range = 'range' in params ? params.range : false;
-  console.log(range);
-  console.log(date);
   if (date === undefined || date.length == 0) {
     if (range == true) {
       window.Telegram.WebApp.MainButton.setText('Please Select a Date Range');
@@ -125,17 +123,13 @@ function onMainButtonClick() {
 // function setMainButtonColor(disable=false) {
 //   // Add transparency to the button color
 //   const tgcolor = window.Telegram.WebApp.MainButton.color;
-//   console.log(tgcolor);
 //   // convert color from hex to rgb
 //   const colorRgb = parseInt(tgcolor.replace('#', ''), 16);
-//   console.log(colorRgb);
 //   const color = {
 //     r: (colorRgb >> 16) & 255,
 //     g: (colorRgb >> 8) & 255,
 //     b: colorRgb & 255,
 //   };
-//   console.log(color);
-//   console.log(disable);
 
 //   let opacity;
 //   if (disable == true) {
@@ -157,11 +151,11 @@ function onMainButtonClick() {
  */
 async function getQueryParams() {
   const urlParams = new URLSearchParams(window.location.search);
-  const options = JSON.parse(urlParams.get('options'));
+  const options = JSON.parse(urlParams.get('options')) || {};
   console.log(options);
 
   // Dynamically import the locale if passed in the url
-  if ('locale' in options) {
+  if (options !== undefined && options !== null && 'locale' in options) {
     let locale = options.locale;
     locale = locale.replace('.js', '').replace('.d.ts', '');
     const imported = await import(`air-datepicker/locale/${locale}`);
