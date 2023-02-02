@@ -1,6 +1,11 @@
-# TGDates
+<h1 align="center">TGDates</h1>
+<p align="center">
+  A simple, extensible and ready to use date and time picker as a Telegram web app.
+</p>
+<a href="https://github.com/harshil21/TGDates" align="center">
+  <img align="center" src="https://user-images.githubusercontent.com/37377066/216425275-2ce04b2a-1c7c-496e-ad8e-881a236ae85e.png" style="width: 40%; left: 30%; position: relative; height:60%;" alt="TGDates_webapp">
+</a>
 
-A simple, extensible and ready to use date and time picker as a Telegram web app.
 
 ## Features
 
