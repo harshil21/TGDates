@@ -13,16 +13,42 @@ TGDates uses the [air-datepicker](https://github.com/t1m0n/air-datepicker) libra
 
 ## Usage and API
 
-This webapp is being hosted at https://TGDates.hoppingturtles.repl.co. Simply pass this URL to `WebAppInfo()` in order to use it.
+### **Endpoint**: `https://tgdates.hoppingturtles.repl.co`
 
-A more detailed example use in a Telegram bot using [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot) is shown in [host.py](https://github.com/harshil21/TGDates/blob/main/host.py): https://github.com/harshil21/TGDates/blob/94f8809eea9ecccc7a57f2ad76f336f68ca8d54e/host.py#L41-L50
+#### Optional parameters:
+- `options`: A JSON [url encoded](https://docs.python.org/3/library/urllib.parse.html#url-quoting) object that will be passed to the air-datepicker constructor. You can find the list of options [here](https://air-datepicker.com/docs). An example use is shown in [Example use](#example-use).
 
-If you want to customize the datepicker instance, pass the `options` parameter like this: `https://TGDates.hoppingturtles.repl.co?options={"timepicker": true}`. This parameter is a url encoded JSON object that will be passed to the air-datepicker constructor. You can find the list of options [here](https://air-datepicker.com/docs).
+#### Response:
+- List[date string]: Returns a list of date strings in the format `YYYY-MM-DDTHH:MM:SS.[microseconds]Z`. The time returned is in UTC. In python, you can convert this to a datetime object using `datetime.strptime("%Y-%m-%dT%H:%M:%S.%fZ")`.
+
+
+### Example use
+
+If you are using this in Python, with the [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot) library, an simple example is given below (other libraries/languages should be similar):
+
+``` python
+import json
+from urllib.parse import quote
+...
+
+async def send_datepicker(update: Update, _: ContextTypes.DEFAULT_TYPE) -> None: 
+    """Sends the web app as a KeyboardButton. We can customize the datepicker as well.""" 
+
+    # parameters to be passed to air-datepicker (optional)
+    options = {"range": True, "locale": "en"}  # allow selecting range of dates
+    url = f"https://tgdates.hoppingturtles.repl.co?options=" + quote(json.dumps(options))  # url encoded JSON string
+    but = KeyboardButton("Pick a date", web_app=WebAppInfo(url))
+    await update.message.reply_text("Choose", reply_markup=ReplyKeyboardMarkup.from_button(but))
+...
+```
+
+The full example is shown in [host.py](https://github.com/harshil21/TGDates/blob/main/host.py).
 
 Some notes:
 
 - The default locale is `en`. To change the locale, pass the two letter locale code to the `locale` key in the `options` parameter. The list of supported locales can be found [here](https://github.com/t1m0n/air-datepicker/tree/v3/src/locale).
-- If you have the time picker enabled, the time the user enters in their web app is with respect to their time zone. However, the time returned from the web app will be in UTC. 
+- If you have the time picker enabled, the time the user enters in their web app is with respect to their time zone. However, the time returned from the web app will be in UTC.
+- To use *only* the timepicker, pass `{onlyTimepicker: True, timepicker: True}` to the `options` parameter. See https://github.com/t1m0n/air-datepicker/issues/523
 
 ### Self hosting
 
