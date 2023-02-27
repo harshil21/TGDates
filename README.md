@@ -4,6 +4,10 @@
 </p>
 <div align="center">
   <img align="center" src="https://user-images.githubusercontent.com/37377066/216425275-2ce04b2a-1c7c-496e-ad8e-881a236ae85e.png" style="width: 40%; left: 30%; position: relative; height:60%;" alt="TGDates">
+
+<br></br>
+![Uptime Robot status](https://img.shields.io/uptimerobot/status/m793631409-b2de373b4308aa5b137f491a)
+![Uptime Robot status](https://img.shields.io/uptimerobot/ratio/m793631409-b2de373b4308aa5b137f491a)
 </div>
 
 ## Features
