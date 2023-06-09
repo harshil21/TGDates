@@ -46,7 +46,7 @@ async def send_datepicker(update: Update, _: ContextTypes.DEFAULT_TYPE) -> None:
     url = f"{HOSTNAME}?options=" + quote(json.dumps(options))  # url encoded JSON string
     but = KeyboardButton("Pick a date", web_app=WebAppInfo(url))
     await update.message.reply_text(
-        "Choose", reply_markup=ReplyKeyboardMarkup.from_button(but)
+        "Choose a date range", reply_markup=ReplyKeyboardMarkup.from_button(but)
     )
 
 
