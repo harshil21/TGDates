@@ -4,3 +4,10 @@ __pycache__
 node_modules
 .ruff_cache
 .env
+
+# Replit files and config:
+venv/
+.upm/
+.replit
+replit.nix
+poetry.lock
