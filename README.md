@@ -3,11 +3,15 @@
   A simple, extensible and ready to use date and time picker as a Telegram web app.
 </p>
 <div align="center">
+  <a href="https://t.me/tgdates_preview_bot/">
   <img align="center" src="https://user-images.githubusercontent.com/37377066/216425275-2ce04b2a-1c7c-496e-ad8e-881a236ae85e.png" style="width: 40%; left: 30%; position: relative; height:60%;" alt="TGDates">
+  </a>
 
 <br></br>
 ![Uptime Robot status](https://img.shields.io/uptimerobot/status/m793631409-b2de373b4308aa5b137f491a)
 ![Uptime Robot status](https://img.shields.io/uptimerobot/ratio/m793631409-b2de373b4308aa5b137f491a)
+<br></br>
+[Live Demo](https://t.me/tgdates_preview_bot)
 </div>
 
 ## Features
@@ -45,7 +49,7 @@ async def send_datepicker(update: Update, _: ContextTypes.DEFAULT_TYPE) -> None:
 ...
 ```
 
-The full example is shown in [host.py](https://github.com/harshil21/TGDates/blob/main/host.py).
+The full example is shown in [host.py](https://github.com/harshil21/TGDates/blob/main/host.py). You can see a live demo of this [here](https://t.me/tgdates_preview_bot).
 
 Some notes:
 
