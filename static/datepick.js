@@ -115,9 +115,10 @@ function onMainButtonClick() {
 
   window.Telegram.WebApp.showConfirm(msgToShow, (confirmed) => {
     if (confirmed === true) {
-      // HapticFeedback doesn't seem to work
+      // HapticFeedback seems to be broken on linux tdesktop at least, it doesn't run the code 
+      // after it. So we will just send the data and not run the hapticfeedback
       console.log("before hapticfeedback")
-      window.Telegram.WebApp.HapticFeedback.notificationOccured('success');
+      // window.Telegram.WebApp.HapticFeedback.notificationOccured('success');
       console.log("after hapticfeedback")
       const data = JSON.stringify(selectedDates);
       window.Telegram.WebApp.sendData(data);
