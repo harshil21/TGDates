@@ -3,7 +3,8 @@ import 'air-datepicker/air-datepicker.css';
 import localeEn from 'air-datepicker/locale/en';
 
 
-// Add global variable so its easy to reference in onMainButtonClick
+// Add global variable so its easy to reference in onMainButtonClick. There is no race 
+// condition here since this script is run on each device separately.
 let AirDatepickerGlobal;
 
 /**
@@ -12,18 +13,26 @@ let AirDatepickerGlobal;
  * @return {AirDatepicker} the airdatepicker instance.
  */
 function makeAirDatepicker(params) {
-  AirDatepickerGlobal = new AirDatepicker('.date-picker', {
-    inline: true,
-    isMobile: true,
-    ...params,
+  try {
+    AirDatepickerGlobal = new AirDatepicker('.date-picker', {
+      inline: true,
+      isMobile: true,
+      ...params,
 
-    onSelect({date, formattedDate, datepicker}) {
-      removeRangeToOnDeselectDate(date, formattedDate, datepicker);
-      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
-      activateMainButton(date, params);
-    },
-  });
-  return AirDatepickerGlobal;
+      onSelect({date, formattedDate, datepicker}) {
+        removeRangeToOnDeselectDate(date, formattedDate, datepicker);
+        window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+        activateMainButton(date, params);
+      },
+    });
+
+    return AirDatepickerGlobal;
+
+  } catch (error) {  // In case of error, show an alert to user with the message
+      console.error(error);
+      window.Telegram.WebApp.showAlert(error.message);
+  }
+
 }
 
 /**
@@ -107,7 +116,7 @@ function onMainButtonClick() {
   window.Telegram.WebApp.showConfirm(msgToShow, (confirmed) => {
     if (confirmed === true) {
       // HapticFeedback doesn't seem to work
-      // window.Telegram.WebApp.HapticFeedback.notificationOccured('success');
+      window.Telegram.WebApp.HapticFeedback.notificationOccured('success');
       const data = JSON.stringify(selectedDates);
       window.Telegram.WebApp.sendData(data);
     } else {

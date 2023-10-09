@@ -1,4 +1,3 @@
-#!/home/hoppingturtles/.pyenv/shims/python
 import asyncio
 import json
 import datetime as dtm
@@ -13,7 +12,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.routing import Mount
 from telegram import KeyboardButton, ReplyKeyboardMarkup, Update, WebAppInfo
-from telegram.ext import Application, ContextTypes, MessageHandler, filters
+from telegram.ext import Application, ContextTypes, MessageHandler, filters, CommandHandler
 
 load_dotenv()
 
@@ -27,7 +26,7 @@ app = FastAPI(routes=routes)
 
 TOKEN = "" or getenv("TOKEN")  # bot token. Append /test to use test servers.
 HOSTNAME = "" or getenv("HOSTNAME")  # HTTP(S) URL for WebAppInfo
-PORT = 80
+PORT = "" or getenv("PORT")
 SSL_CERT = "" or getenv("SSL_CERT")  # path to SSL certificate for https
 SSL_KEY = "" or getenv("SSL_KEY")  # path to SSL key for https
 
@@ -59,6 +58,8 @@ async def received_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     for date_str in data:
         # Convert the string to datetime object
         datetime_obj = dtm.datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+        # dtm object to: "YYYY-MM-DD HH:MM:SS"
+        datetime_obj = datetime_obj.strftime("%Y-%m-%d %H:%M:%S")
         dates.append(datetime_obj)
     await update.message.reply_text(f"received date(s):\n{dates}")
 
@@ -82,7 +83,7 @@ async def main() -> None:
     # If we are testing locally, use PTB
     tg_app = Application.builder().token(TOKEN).build()
 
-    tg_app.add_handler(MessageHandler(filters.TEXT, send_datepicker))
+    tg_app.add_handler(CommandHandler("start", send_datepicker))
     tg_app.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, received_data))
 
 

@@ -18,15 +18,38 @@
 
 TGDates uses the [air-datepicker](https://github.com/t1m0n/air-datepicker) library to provide a simple and easy to use date and time picker. It is also extensible, so you can add your own custom date and time formats. TGDates provides an API so you can use most of the features of the air-datepicker library completely and easily from the Telegram bot.
 
+- No install needed! 🚀
+- Applies user's color schemes automatically ✨
+- Use any programming language or library to use this API 🎉
+
+
 ## Usage and API
+
+This API is meant for developers who want a quick and easy way to get a date and time picker in their Telegram bot. It can only be used within the `web_app` parameter of [`KeyboardButton`](https://core.telegram.org/bots/webapps#keyboard-button-mini-apps).
 
 ### **Endpoint**: `https://tgdates.hoppingturtles.repl.co`
 
+Paste that URL inside a [`WebAppInfo`](https://core.telegram.org/bots/api#webappinfo) object and pass it to the `web_app` parameter of [`KeyboardButton`](https://core.telegram.org/bots/api#keyboardbutton).
+
+#### Required parameters:
+
+- None.
+
+By default, the datepicker is shown, in English. Users can only select one date.
+
 #### Optional parameters:
-- `options`: A JSON [url encoded](https://docs.python.org/3/library/urllib.parse.html#url-quoting) object that will be passed to the air-datepicker constructor. You can find the list of options [here](https://air-datepicker.com/docs). An example use is shown in [Example use](#example-use).
+- `options`: A JSON [url encoded](https://en.wikipedia.org/wiki/Percent-encoding) object that will be passed to the air-datepicker constructor. You can find the list of options [here](https://air-datepicker.com/docs).
+
+A code snippet using this is shown in [Example use](#example-use).
 
 #### Response:
-- List[date string]: Returns a list of date strings in the format `YYYY-MM-DDTHH:MM:SS.[microseconds]Z`. The time returned is in UTC. In python, you can convert this to a datetime object using `datetime.strptime("%Y-%m-%dT%H:%M:%S.%fZ")`.
+- List[date string]: Returns a list of date strings in the format `YYYY-MM-DDTHH:MM:SS.[microseconds]Z`. The time returned is in UTC. 
+
+In Python, you can convert this to a datetime object using: `datetime.strptime("%Y-%m-%dT%H:%M:%S.%fZ")`.
+
+#### Errors:
+
+- If something went wrong initializing the datepicker, the error will be shown on the screen as an alert.
 
 
 ### Example use
@@ -35,11 +58,11 @@ If you are using this in Python, with the [python-telegram-bot](https://github.c
 
 ``` python
 import json
-from urllib.parse import quote
+from urllib.parse import quote  # for url encoding
 ...
 
 async def send_datepicker(update: Update, _: ContextTypes.DEFAULT_TYPE) -> None: 
-    """Sends the web app as a KeyboardButton. We can customize the datepicker as well.""" 
+    """Sends the mini app as a KeyboardButton. We can customize the datepicker as well.""" 
 
     # parameters to be passed to air-datepicker (optional)
     options = {"range": True, "locale": "en"}  # allow selecting range of dates
@@ -59,10 +82,29 @@ Some notes:
 
 ### Self hosting
 
-To host this webapp by yourself, you need to:
+If you would like to host this webapp yourself, you can do so. This is recommended if you want to make code changes to this repository.
 
-1. Have node, npm and webpack installed.
-2. Install all the requirements from `requirements.txt` and `package.json`.
-3. Preferably have a domain name and a SSL certificate, because even though [Telegram says](https://core.telegram.org/bots/webapps#testing-web-apps) you can test your webapp without HTTPS, the Android client will refuse connections to non-HTTPS sites even in the test servers.
-4. Now clone this repository and run `npx webpack` in the root directory. This will create a `dist` directory with all the files needed to run the webapp.
-5. Run the web server by running `python host.py`. This will start a web server on port 80. You can change the port and other parameters including hostname and bot token in the `host.py` file. You may need to run this as root if you want to bind to port 80.
+1. Have [node](https://nodejs.org/en/download), npm and [webpack](https://webpack.js.org/guides/installation/), and [python](https://python.org/downloads) installed. This tutorial uses Python 3.11, although other python versions 3.7+ should work as well.
+2. Clone this repository.
+```bash
+git clone https://github.com/harshil21/TGDates.git
+```
+3. Install all the requirements from [`requirements.txt`](https://github.com/harshil21/TGDates/blob/main/requirements.txt) and [`package.json`](https://github.com/harshil21/TGDates/blob/main/package.json).
+
+```bash
+cd TGDates/ && pip install -r requirements.txt && npm install -D
+```
+
+4. Preferably have a domain name and a SSL certificate, because even though [Telegram says](https://core.telegram.org/bots/webapps#testing-mini-apps) you can test your webapp without HTTPS, the Android client will refuse connections to non-HTTPS sites even in the test servers (tested in Feb 23', may have changed by now).
+5. A bot token. You can get one by talking to [@BotFather](https://t.me/BotFather).
+6. Populate your `.env` file in the root of the repository with the values:
+```bash
+TOKEN="your bot token"
+HOST="your hostname"
+PORT="your port to run the server on"
+SSL_CERT="Optional: path to your SSL certificate"
+SSL_KEY="Optional: path to your SSL key"
+```
+
+7. Now run `npx webpack` in the root directory. This will create a `dist` directory with all the files needed to run the webapp.
+8. Run the web server by running `python host.py`. This will start a web server on your selected port. You may need to run this as root if you want to bind to a privileged port (port 80, 443, etc.).
