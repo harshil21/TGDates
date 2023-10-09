@@ -116,7 +116,9 @@ function onMainButtonClick() {
   window.Telegram.WebApp.showConfirm(msgToShow, (confirmed) => {
     if (confirmed === true) {
       // HapticFeedback doesn't seem to work
+      console.log("before hapticfeedback")
       window.Telegram.WebApp.HapticFeedback.notificationOccured('success');
+      console.log("after hapticfeedback")
       const data = JSON.stringify(selectedDates);
       window.Telegram.WebApp.sendData(data);
     } else {
