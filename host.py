@@ -11,8 +11,8 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.routing import Mount
-from telegram import KeyboardButton, ReplyKeyboardMarkup, Update, WebAppInfo
-from telegram.ext import Application, ContextTypes, MessageHandler, filters, CommandHandler
+from telegram import KeyboardButton, ReplyKeyboardMarkup, Update, WebAppInfo #upm package(python-telegram-bot)
+from telegram.ext import Application, ContextTypes, MessageHandler, filters, CommandHandler #upm package(python-telegram-bot)
 
 load_dotenv()
 
@@ -48,6 +48,21 @@ async def send_datepicker(update: Update, _: ContextTypes.DEFAULT_TYPE) -> None:
         "Choose a date range", reply_markup=ReplyKeyboardMarkup.from_button(but)
     )
 
+async def datepicker_only(update: Update, _: ContextTypes.DEFAULT_TYPE) -> None:
+    url = f"{HOSTNAME}"  # url encoded JSON string
+    but = KeyboardButton("Pick a date", web_app=WebAppInfo(url))
+    await update.message.reply_text(
+        "Choose a date range", reply_markup=ReplyKeyboardMarkup.from_button(but)
+    )
+
+async def datepicker_wrong(update: Update, _: ContextTypes.DEFAULT_TYPE) -> None:
+    # parameters to be passed to air-datepicker
+    options = {"range": True, "randomshit": "opops"}
+    url = f"{HOSTNAME}?options=" + quote(json.dumps(options))  # url encoded JSON string
+    but = KeyboardButton("Pick a date", web_app=WebAppInfo(url))
+    await update.message.reply_text(
+        "Choose a date range", reply_markup=ReplyKeyboardMarkup.from_button(but)
+    )
 
 async def received_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """This is the data received from the web app. It is a JSON string containing a list of dates,
@@ -68,7 +83,7 @@ async def main() -> None:
     server = uvicorn.Server(
         config=uvicorn.Config(
             f"{Path(__file__).stem}:app",
-            port=PORT,
+            port=int(PORT),
             host="0.0.0.0",
             reload=True,
             ssl_certfile=SSL_CERT,
@@ -84,6 +99,8 @@ async def main() -> None:
     tg_app = Application.builder().token(TOKEN).build()
 
     tg_app.add_handler(CommandHandler("start", send_datepicker))
+    tg_app.add_handler(CommandHandler("wrong_date", datepicker_wrong))
+    tg_app.add_handler(CommandHandler("only_date", datepicker_only))
     tg_app.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, received_data))
 
 

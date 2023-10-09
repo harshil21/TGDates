@@ -9,6 +9,7 @@ python = "^3.10"
 fastapi = "^0.89.1"
 uvicorn = "^0.20.0"
 python-dotenv = "^0.21.1"
+python-telegram-bot = "^20.6"
 
 [tool.poetry.dev-dependencies]
 

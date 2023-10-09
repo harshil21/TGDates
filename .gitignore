@@ -11,3 +11,4 @@ venv/
 .replit
 replit.nix
 poetry.lock
+.pythonlibs/
