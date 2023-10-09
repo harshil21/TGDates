@@ -84,7 +84,7 @@ Some notes:
 
 If you would like to host this webapp yourself, you can do so. This is recommended if you want to make code changes to this repository.
 
-1. Have [node](https://nodejs.org/en/download), npm and [webpack](https://webpack.js.org/guides/installation/), and [python](https://python.org/downloads) installed. This tutorial uses Python 3.11, although other python versions 3.7+ should work as well.
+1. Have [node](https://nodejs.org/en/download), npm, [webpack](https://webpack.js.org/guides/installation/), and [python](https://python.org/downloads) installed. This tutorial uses Python 3.11, although other python versions 3.7+ should work as well.
 2. Clone this repository.
 ```bash
 git clone https://github.com/harshil21/TGDates.git
