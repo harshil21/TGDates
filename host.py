@@ -37,32 +37,35 @@ async def web_html(request: Request):
         return HTMLResponse(content=f.read())
 
 
-async def send_datepicker(update: Update, _: ContextTypes.DEFAULT_TYPE) -> None:
+async def datepicker_range(update: Update, _: ContextTypes.DEFAULT_TYPE) -> None:
     """Sends the web app as a KeyboardButton. We can customize the datepicker as well."""
 
     # parameters to be passed to air-datepicker
     options = {"range": True, "locale": "en"}
     url = f"{HOSTNAME}?options=" + quote(json.dumps(options))  # url encoded JSON string
-    but = KeyboardButton("Pick a date", web_app=WebAppInfo(url))
+    but = KeyboardButton("Pick a date range", web_app=WebAppInfo(url))
     await update.message.reply_text(
         "Choose a date range", reply_markup=ReplyKeyboardMarkup.from_button(but)
     )
+
 
 async def datepicker_only(update: Update, _: ContextTypes.DEFAULT_TYPE) -> None:
-    url = f"{HOSTNAME}"  # url encoded JSON string
-    but = KeyboardButton("Pick a date", web_app=WebAppInfo(url))
+    """Send a zero effort simple datepicker to the user."""
+    but = KeyboardButton("Pick a date", web_app=WebAppInfo(HOSTNAME))
     await update.message.reply_text(
-        "Choose a date range", reply_markup=ReplyKeyboardMarkup.from_button(but)
+        "Choose a date", reply_markup=ReplyKeyboardMarkup.from_button(but)
     )
 
-async def datepicker_wrong(update: Update, _: ContextTypes.DEFAULT_TYPE) -> None:
-    # parameters to be passed to air-datepicker
-    options = {"range": True, "randomshit": "opops"}
+
+async def date_and_time_picker(update: Update, _: ContextTypes.DEFAULT_TYPE) -> None:
+    """Send a date and time picker to the user."""
+    options = {"timepicker": True}
     url = f"{HOSTNAME}?options=" + quote(json.dumps(options))  # url encoded JSON string
-    but = KeyboardButton("Pick a date", web_app=WebAppInfo(url))
+    but = KeyboardButton("Pick a date range and time", web_app=WebAppInfo(url))
     await update.message.reply_text(
-        "Choose a date range", reply_markup=ReplyKeyboardMarkup.from_button(but)
+        "Choose a date range and time", reply_markup=ReplyKeyboardMarkup.from_button(but)
     )
+
 
 async def received_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """This is the data received from the web app. It is a JSON string containing a list of dates,
@@ -98,9 +101,9 @@ async def main() -> None:
     # If we are testing locally, use PTB
     tg_app = Application.builder().token(TOKEN).build()
 
-    tg_app.add_handler(CommandHandler("start", send_datepicker))
-    tg_app.add_handler(CommandHandler("wrong_date", datepicker_wrong))
-    tg_app.add_handler(CommandHandler("only_date", datepicker_only))
+    tg_app.add_handler(CommandHandler("date_range", datepicker_range))
+    tg_app.add_handler(CommandHandler(["start", "only_date"], datepicker_only))
+    tg_app.add_handler(CommandHandler("date_and_time", date_and_time_picker))
     tg_app.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, received_data))
 
 
