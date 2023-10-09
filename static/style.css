@@ -21,7 +21,7 @@
     --adp-color: var(--tg-theme-text-color, #000);
     --adp-color-secondary: var(--tg-theme-hint-color, #9c9c9c);
     --adp-color-other-month: var(--tg-theme-hint-color, #dedede);
-    --adp-time-track-height: 0.2px;
+    --adp-time-track-height: 1px;
     --adp-time-track-color: var(--tg-theme-button-color, #dedede);
     --adp-time-day-period-color: var(--tg-theme-text-color, #000);
     --adp-btn-color: var(--tg-theme-button-color, #4eb5e6);
